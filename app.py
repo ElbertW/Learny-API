@@ -48,6 +48,5 @@ def eval():
 
     return jsonify({'result': Parse(request.json['statement']) }), 201
 
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
+def runLocalServer():
+    app.run(debug=True)
