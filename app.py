@@ -6,21 +6,47 @@ from flask import request
 
 from AlgebraicParser import AlgebraicParser
 
+from random import randint
+
+from BingImagesAPI import BingImageSearch
+import json
+
 app = Flask(__name__)
 
 AP = AlgebraicParser()
 
+# Set of phrases for Learny to say
+yesResults = ["Yes!", "You're right!", "That's Correct!", "Emoji_100"]
+noResults = ["No.", "Not quite.", "Nope.", "Emoji_Poop"]
+
 # Main Parsing Function
 def Parse(input):
+
+    # (1) Empty input
+    if input == '' or input.isspace():
+        return "You didn't ask me anything!"
+
+
+    # (2) TODO: Write logic for parsing English statements
     if '=' not in input:
-        return 'maybe'
+        return "IDK"
 
+
+    # (3) Mathematical Evaluations
     equations = input.split('=')
-
     evaluations = []
 
     for e in equations:
-        evaluations.append(AP.eval(e))
+        if e == '' or e.isspace():
+            continue
+
+        try:
+            evaluations.append(AP.eval(e))
+        except:
+            return "That doesn't make sense!"
+
+    if len(evaluations) < 2:
+        return "That doesn't make sense!"
 
     left = 0
     right = 0
@@ -30,9 +56,10 @@ def Parse(input):
         right = evaluations[i+1]
 
         if(left != right):
-            return 'no'
+            return 'No'
 
-    return 'yes'
+    return 'Yes'
+
 
 
 # 404 Handler
@@ -46,7 +73,25 @@ def eval():
     if not request.json or not 'statement' in request.json:
         abort(400)
 
-    return jsonify({'result': Parse(request.json['statement']) }), 201
+    result = Parse(request.json['statement'])
+
+    if result == 'Yes':
+        r = randint(0, len(yesResults) - 1)
+        result = yesResults[r]
+    elif result == 'No':
+        r = randint(0, len(noResults) - 1)
+        result = noResults[r]
+    elif result == 'IDK':
+
+        headers, result = BingImageSearch(request.json['statement'])
+        resultDict = json.loads(result)
+
+        imageURL = resultDict["value"][0]["thumbnailUrl"]
+
+        return jsonify({'result':  "I don't know, but here's a picture!",
+                        'url': imageURL}), 201
+
+    return jsonify({'result':  result}), 201
 
 def runLocalServer():
     app.run(debug=True)
