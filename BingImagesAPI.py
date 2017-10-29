@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import http.client, urllib.parse, json, ssl
+import Keys
 
 # **********************************************
 # *** Update or verify the following values. ***
 # **********************************************
 
 # Replace the subscriptionKey string value with your valid subscription key.
-subscriptionKey = "c9124fee2e5943c990540b00bd6a8f8a"
+subscriptionKey = Keys.BINGAPIKEY
 
 # Verify the endpoint URI.  At this writing, only one endpoint is used for Bing
 # search APIs.  In the future, regional endpoints may be available.  If you

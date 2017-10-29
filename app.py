@@ -86,7 +86,12 @@ def eval():
         headers, result = BingImageSearch(request.json['statement'])
         resultDict = json.loads(result)
 
-        imageURL = resultDict["value"][0]["thumbnailUrl"]
+        length = len(resultDict["value"])
+
+        if length == 0:
+            return jsonify({'result':  "That doesn't make sense!"}), 201
+
+        imageURL = resultDict["value"][randint(0,length)]["thumbnailUrl"]
 
         return jsonify({'result':  "I don't know, but here's a picture!",
                         'url': imageURL}), 201

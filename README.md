@@ -32,7 +32,9 @@ POST returns a response in the form of another compact JSON object:
 {"result": "yes"}
 ```
 
-To test queries on your local server, open up a new terminal and use `curl` to submit a POST request. Edit the inline JSON object to see the different possible outcomes!
+To test queries on your local server, open up a new terminal and use `curl` to submit a POST request. Edit the inline JSON to see the different possible outcomes!
 ```
 curl -i -H "Content-Type: application/json" -X POST -d '{"statement":"1+1=3"}' http://localhost:5000/learny/api/v1.0/eval
 ```
+
+If the JSON input contains no `=`, then the API will perform a Bing Image search and return the top hit in the form of a URL.
