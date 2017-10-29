@@ -37,4 +37,12 @@ To test queries on your local server, open up a new terminal and use `curl` to s
 curl -i -H "Content-Type: application/json" -X POST -d '{"statement":"1+1=3"}' http://localhost:5000/learny/api/v1.0/eval
 ```
 
-If the JSON input contains no `=`, then the API will perform a Bing Image search and return the top hit in the form of a URL.
+If the JSON input contains no `=`, then the API will perform a Bing Image search and return the top hit in the form of a URL. Note that this feature requires you put your own Microsoft Cognitive Services key in the `BingImagesAPI.py` file.
+
+## The Real API
+If you want to try out the real API, do:
+```
+curl -i -H "Content-Type: application/json" -X POST -d '{"statement":"1+1=3"}' http://elbertw.pythonanywhere.com/learny/api/v1.0/eval
+```
+
+Please be respectful and don't spam our API endpoint! :D
